@@ -16,7 +16,7 @@ cd test_contact-form
 
 2. **Dockerコンテナを起動**
 ```bash
-docker-compose exec php bash
+docker-compose up -d --build
 ```
 
 3. **PHPコンテナに入る**
@@ -56,4 +56,4 @@ php artisan migrate --seed
 
 
 ## ER図
-! [ER図](docs/ER_diagram.png)
+![ER図](docs/ER_diagram.png)
