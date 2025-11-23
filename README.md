@@ -3,7 +3,6 @@
 ## アプリケーション概要
 - Laravel 8 を使用した簡易お問い合わせフォームアプリケーションです。
 - Dockerで開発環境を構築可能。
-- ER図は現在作成中です（docs/ER_diagram.png に後日追加予定）。
 
 ---
 
@@ -57,4 +56,4 @@ php artisan migrate --seed
 
 
 ## ER図
-- 現在作成中です。完成後、docs/ER_diagram.png に追加予定。
+! [ER図](docs/ER_diagram.png)
