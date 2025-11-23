@@ -52,8 +52,8 @@ php artisan migrate --seed
 - 開発環境:http://localhost
 - ユーザー登録:http://localhost/register
 - phpMyAdmin:http://localhost:8080
-    -ユーザー名:laravel_user
-    -パスワード:laravel_pass
+    - ユーザー名:laravel_user
+    - パスワード:laravel_pass
 
 
 ## ER図
