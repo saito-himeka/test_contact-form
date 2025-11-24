@@ -19,15 +19,15 @@
             <span class="form__label--required">※</span>
         </div>
         <div class="form__group-content">
-            <input type="text" name="last_name" placeholder="例:山田" value="{{ old('last_name') }}" required/>
-            <input type="text" name="first_name" placeholder="例:太郎" value="{{ old('first_name') }}" required/>
-            <div class="form__error">
+            <input type="text" name="last_name" placeholder="例:山田" value="{{ old('last_name') }}">
             @error('last_name')
-                {{ $message }}
+                <p class="error-message">{{ $message }}</p>
             @enderror
+            <input type="text" name="first_name" placeholder="例:太郎" value="{{ old('first_name') }}">
             @error('first_name')
-                {{ $message }}
+                <p class="error-message">{{ $message }}</p>
             @enderror
+            <div class="form__error">
             </div>
         </div>
         </div>
@@ -38,10 +38,9 @@
             <span class="form__label--required">※</span>
         </div>
         <div class="form__group-content">
-            <label><input type="radio" name="gender" value="1" required> 男性</label>
-            <label><input type="radio" name="gender" value="2"> 女性</label>
-            <label><input type="radio" name="gender" value="3"> その他</label>
-            <!--<input type="radio" name="gender"  value="{{ old('gender') }}" />-->
+            <label><input type="radio" name="gender" value="1" @checked(old('gender') == 1)> 男性</label>
+            <label><input type="radio" name="gender" value="2" @checked(old('gender') == 2)> 女性</label>
+            <label><input type="radio" name="gender" value="3" @checked(old('gender') == 3)> その他</label>
             <div class="form__error">
             @error('gender')
             {{ $message }}
@@ -73,17 +72,21 @@
             <span class="form__label--required">※</span>
         </div>
         <div class="form__group-content">
-                <input type="text" name="tel1" pattern="\d{2,4}" maxlength="4" placeholder="080">
+                <input type="text" name="tel1" value="{{ old('tel1') }}"  pattern="\d{2,4}" maxlength="4" placeholder="080">
             <span>-</span>
-                <input type="text" name="tel2" pattern="\d{2,4}" maxlength="4" placeholder="1234">
+                <input type="text" name="tel2" value="{{ old('tel2') }}" pattern="\d{2,4}" maxlength="4" placeholder="1234">
             <span>-</span>
-                <input type="text" name="tel3" pattern="\d{3,4}" maxlength="4" placeholder="5678">
-            <!--<input type="tel" name="tel" placeholder="09012345678" value="{{ old('tel') }}" />-->
-            <div class="form__error">
-            @error('tel')
-            {{ $message }}
+                <input type="text" name="tel3" value="{{ old('tel3') }}" pattern="\d{3,4}" maxlength="4" placeholder="5678">
+            @error('tel1')
+                <p class="error-message" style="color:red;">{{ $message }}</p>
+            @else
+                @error('tel2')
+                    <p class="error-message" style="color:red;">{{ $message }}</p>
+                @enderror
+                @error('tel3')
+                    <p class="error-message" style="color:red;">{{ $message }}</p>
+                @enderror
             @enderror
-            </div>
         </div>
         </div>
     <!-----------------address-------------------->
@@ -127,17 +130,17 @@
         </div>
         <div class="form__group-content">
             <div class="form__input--text">
-            <select name="category_id" required>
-            <option value="" selected>選択してください</option>
-            <option value="1">商品のお届けについて</option>
-            <option value="2">商品の交換について</option>
-            <option value="3">商品トラブル</option>
-            <option value="4">ショップへのお問い合わせ</option>
-            <option value="5">その他</option>
+            <select name="category_id">
+            <option value="">選択してください</option>
+            <option value="1" @selected(old('category_id') == '1'>商品のお届けについて</option>
+            <option value="2" @selected(old('category_id') == '2'>商品の交換について</option>
+            <option value="3" @selected(old('category_id') == '3'>商品トラブル</option>
+            <option value="4" @selected(old('category_id') == '4'>ショップへのお問い合わせ</option>
+            <option value="5" @selected(old('category_id') == '5'>その他</option>
             </select>
             </div>
             <div class="form__error">
-            @error('category')
+            @error('category_id')
             {{ $message }}
             @enderror
             </div>
@@ -153,6 +156,11 @@
         <div class="form__group-content">
             <div class="form__input--textarea">
             <textarea name="detail" placeholder="資料をいただきたいです">{{ old('detail') }}</textarea>
+            </div>
+            <div class="form__error">
+            @error('detail')
+            {{ $message }}
+            @enderror
             </div>
         </div>
         </div>
