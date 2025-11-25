@@ -1,11 +1,80 @@
-
-.thanks__content {
-    margin: 0 auto;
-    padding: 30px 15px;
-    max-width: 1230px;
+body {
+    font-family: 'Helvetica Neue', Arial, sans-serif;
+    background-color: #ffffff;
+    /* 背景は白 */
+    height: 100vh;
+    width: 100vw;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+    overflow: hidden;
+    /* スクロールバーが出ないように */
 }
 
-.thanks__heading {
-    margin-bottom: 40px;
+/* 背景の巨大な "Thank you" テキスト */
+.background-text {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    font-size: 25vw;
+    /* 画面幅に合わせてサイズ調整 */
+    font-family: 'Georgia', serif;
+    /* セリフ体 */
+    color: #fcfcfc;
+    /* 非常に薄いグレー/白に近い色 */
+    text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.02);
+    /* ほんの少し影をつけて立体感を出す */
+    white-space: nowrap;
+    z-index: 0;
+    /* 一番奥に配置 */
+    user-select: none;
+    /* 選択できないようにする */
+    pointer-events: none;
+    /* クリックを透過させる */
+}
+
+/* 念のためフォントカラーを微調整して視認性を画像に近づける */
+@media screen and (min-width: 1000px) {
+    .background-text {
+        font-size: 300px;
+        /* PC画面などで大きくなりすぎないように制限 */
+    }
+}
+
+/* 前面のコンテンツコンテナ */
+.content-container {
+    position: relative;
+    z-index: 1;
+    /* 背景より手前に配置 */
     text-align: center;
+    width: 100%;
+}
+
+.message {
+    font-size: 20px;
+    color: #8a7c74;
+    /* 茶色系のグレー */
+    margin-bottom: 30px;
+    font-weight: normal;
+    letter-spacing: 0.5px;
+}
+
+.home-button {
+    display: inline-block;
+    padding: 10px 40px;
+    background-color: #7d6c61;
+    /* ボタンの茶色 */
+    color: #ffffff;
+    text-decoration: none;
+    font-size: 14px;
+    border-radius: 2px;
+    transition: background-color 0.3s;
+    cursor: pointer;
+    border: none;
+}
+
+.home-button:hover {
+    background-color: #6b5a50;
 }

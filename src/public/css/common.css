@@ -1,18 +1,16 @@
-.header {
-    background: #fff;
-    border-bottom: 2px solid #efefef;
-}
-
-.header__inner {
-    margin: 0 auto;
-    padding: 20px 15px;
-    max-width: 1230px;
+/* Header styles */
+header {
+    border-bottom:3px solid #f4f1eb;
+    /* 背景と色を合わせる */
+    padding: 20px 0;
     display: flex;
     justify-content: center;
+    align-items: center;
 }
 
-.header__logo {
-    color: #82756b;
-    text-decoration: none;
-    font-size: 24px;
+.header-title {
+    font-size: 26px;
+    font-weight: bold;
+    color: #8a7c74;
+    font-family: 'Georgia', serif;
 }

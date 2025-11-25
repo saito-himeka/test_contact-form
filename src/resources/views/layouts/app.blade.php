@@ -13,12 +13,8 @@
 </head>
 
 <body>
-    <header class="header">
-        <div class="header__inner">
-        <a class="header__logo" href="/">
-            FashionablyLate
-        </a>
-        </div>
+    <header>
+        <div class="header-title">FashionablyLate</div>
     </header>
 
     <main>

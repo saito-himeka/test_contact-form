@@ -1,33 +1,44 @@
-
-.contact-form__content {
+.container {
+    width: 100%;
+    max-width: 900px;
+     /* フォームに合わせた幅 */
     margin: 0 auto;
-    padding: 30px 15px;
-    max-width: 1230px;
-    color: #82756b;
+    padding: 0 20px 50px;
 }
 
-.contact-form__heading {
-    margin-bottom: 40px;
+
+
+ /* Main Title */
+.page-title {
     text-align: center;
+    font-size: 24px;
+    color: #8a7c74;
+    font-family: 'Georgia', serif;
+    margin: 40px 0; 
 }
 
-.form {
-    margin: 0 auto;
-    width: 70%;
-    text-align: center;
-}
-
-.form__group {
+ /* Form Layout */
+.form-group {
     display: flex;
-    justify-content: space-between;
-    margin-bottom: 15px;
+    align-items: flex-start;
+     /* ラベルと入力欄の上端を合わせる */
+    margin-bottom: 25px;
 }
 
-.form__label--required {
-    margin-left: 5px;
-    padding: 4px 6px;
-    border-radius: 3px;;
-    color: #e72424;
+.form-label-area {
+    width: 35%;
+    padding-right: 20px;
+    padding-top: 10px;
+     /* 入力フィールドのパディングと合わせる */
+    text-align: left;
+    font-size: 15px;
+    font-weight: bold;
+    color: #8a7c74;
+}
+
+.form-input-area {
+    width: 65%;
+    padding-left: 10px;
 }
 
 .form__error {
@@ -36,41 +47,147 @@
     text-align: left;
 }
 
-.form__input--text input,
-.form__input--textarea textarea {
-    padding: 10px;
-    width: 600px;
-    border: 1px solid #ddd;
-    border-radius: 3px;
-
-    appearance: none;
+.required-mark {
+    color: #ff0000;
+    font-weight: normal;
+    font-size: 12px;
+    margin-left: 5px;
 }
 
-.form__input--text input {
-    height: 40px;
+ /* Input & Select & Textarea Styling */
+.input-text,
+.input-text-half,
+.select-box,
+.textarea-content,
+.tel-input {
+    padding: 10px 15px;
+    border: 1px solid #e0e0e0;
+    background-color: #f4f4f4;
+    border-radius: 2px;
+    width: 100%;
+    color: #555;
+    font-size: 14px;
 }
 
-.form__input--textarea textarea {
-    height: 180px;
+.input-text::placeholder,
+.tel-input::placeholder,
+.textarea-content::placeholder {
+    color: #c4c4c4;
+    font-size: 13px;
 }
 
-.form__button {
-    margin-top: 30px;
+ /* Name and Phone Number fields */
+.name-group {
+    display: flex;
+    gap: 15px;
 }
 
-.form__button-submit {
-    padding: 10px;
-    width: 30%;
-    height: 50px;
-    border: none;
-    border-radius: 3px;
-    background: #82756b;
-    color: #fff;
+.name-item {
+    display: flex;
+    flex-direction: column;
+    /* input → error を縦並び */
+    width: 50%;
+}
+
+.name-group .input-text-half {
+    width: calc(50% - 7.5px);
+}
+
+.tel-group {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+}
+
+.tel-group .tel-input {
+    width: calc((100% - 10px) / 3);
+}
+
+.tel-group span {
+    color: #8a7c74;
+    font-size: 16px;
+}
+
+ /* Address Placeholder Text */
+.placeholder-text {
+    color: #ccc;
+    font-size: 13px;
+    margin-top: 5px;
+    display: block;
+}
+
+ /* Gender Radio Buttons */
+.radio-group {
+    display: flex;
+    gap: 30px;
+    padding-top: 10px;
+}
+
+.radio-item {
+    display: flex;
+    align-items: center;
+    font-size: 15px;
+    color: #8a7c74;
     cursor: pointer;
 }
 
-.error-message {
-    color: red;
-    font-size: 14px;
-    margin-top: 4px;
+ /* Custom Radio Button Styling (画像に合わせるため) */
+input[type="radio"] {
+    appearance: none;
+    width: 16px;
+    height: 16px;
+    border: 2px solid #8a7c74;
+     /* チェックボックスの枠線色 */
+    border-radius: 50%;
+    margin-right: 8px;
+    position: relative;
+    cursor: pointer;
+    outline: none;
+    background-color: #ffffff;
+}
+
+input[type="radio"]:checked {
+    background-color: #8a7c74;
+     /* チェック時の背景色 */
+    border-color: #8a7c74;
+}
+
+ /* Hidden input */
+input[type="radio"]:checked::before {
+    content: '';
+    display: block;
+    width: 8px;
+    height: 8px;
+    background-color: #ffffff;
+    border-radius: 50%;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%); 
+}
+
+ /* Textarea */
+.textarea-content {
+    height: 120px;
+    resize: none;
+}
+
+ /* Confirmation Button */
+.btn-confirm {
+    display: block;
+    width: 180px;
+    padding: 12px;
+    margin: 50px auto 0;
+    border: none;
+    border-radius: 2px;
+    background-color: #7d6c61;
+     /* ボタンの濃い茶色 */
+    color: #ffffff;
+    font-size: 16px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.btn-confirm:hover {
+    background-color: #6b5a50;
 }

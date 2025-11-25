@@ -2,13 +2,19 @@
 
 namespace App\Http\Controllers;
 
+use Illuminate\Http\Request;
 use App\Http\Requests\ContactRequest;
 use App\Models\Contact;
+use App\Models\Category;
 
 class ContactController extends Controller
 {
+    
     public function index(){
-        return view('index');
+
+        $categories = Category::all();
+
+        return view('index', compact('categories'));
     }
 
     public function confirm(ContactRequest $request){
@@ -31,14 +37,8 @@ class ContactController extends Controller
         $contact['tel'] = $request->tel1 . $request->tel2 . $request->tel3;
 
         //category表示用の処理
-        $categories = [
-        1 => '商品のお届けについて',
-        2 => '商品の交換について',
-        3 => '商品トラブル',
-        4 => 'ショップへのお問い合わせ',
-        5 => 'その他'
-        ];
-        $contact['category_name'] = $categories[$request->category_id] ?? '未選択';
+        $category = Category::find($request->category_id);
+        $contact['category_name'] = $category ? $category->content : '未選択';
 
         //gender表示用の処理
         $genders = [
@@ -64,6 +64,7 @@ class ContactController extends Controller
         'detail'
         ]);
         Contact::create($contact);
-        return view('thanks');
+        
+        return redirect('/thanks');
     }
 }
