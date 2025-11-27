@@ -8,7 +8,7 @@
 <main class="container">
         <h2 class="page-title">Confirm</h2>
 
-        <form action="/store2" method="post">
+        <form action="/store" method="post">
             @csrf
 
             <!-- Hidden（DBへ送る値） -->

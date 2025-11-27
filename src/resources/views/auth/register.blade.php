@@ -1,0 +1,35 @@
+@extends('layouts.app')
+
+@section('css')
+<link rel="stylesheet" href="{{ asset('css/register.css') }}">
+@endsection
+
+@section('content')
+<body>
+<main>
+        <h2 class="page-heading">Register</h2>
+
+        <div class="register-container">
+            <form action="/register" method="post">
+                @csrf
+                <div class="form-group">
+                    <label for="name" class="form-label">お名前</label>
+                    <input type="text" id="name" name="name" class="form-input" placeholder="例: 山田 太郎">
+                </div>
+
+                <div class="form-group">
+                    <label for="email" class="form-label">メールアドレス</label>
+                    <input type="email" id="email" name="email" class="form-input" placeholder="例: test@example.com">
+                </div>
+
+                <div class="form-group">
+                    <label for="password" class="form-label">パスワード</label>
+                    <input type="password" id="password" name="password" class="form-input" placeholder="例: coachtech1106">
+                </div>
+
+                <button type="submit" class="register-button">登録</button>
+            </form>
+        </div>
+</main>
+</body>
+@endsection

@@ -1,0 +1,126 @@
+body {
+    font-family: 'Helvetica Neue', Arial, sans-serif;
+    background-color: #f4f1eb;
+    /* ベージュ背景 */
+    color: #8a7c74;
+    /* テキスト色 */
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+}
+
+/* Header styles */
+header {
+    background-color: #ffffff;
+    padding: 15px 30px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+}
+
+.header-title {
+    font-size: 26px;
+    font-weight: bold;
+    color: #8a7c74;
+    font-family: 'Georgia', serif;
+    /* ロゴっぽくセリフ体に */
+}
+
+.login-btn {
+    padding: 8px 24px;
+    border: 1px solid #e0dad4;
+    background-color: #fcfcfc;
+    color: #b0a59e;
+    text-decoration: none;
+    border-radius: 2px;
+    font-size: 13px;
+    font-weight: bold;
+    letter-spacing: 0.5px;
+    transition: all 0.3s ease;
+}
+
+.login-btn:hover {
+    background-color: #f4f1eb;
+}
+
+/* Main content styles */
+main {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    /* 縦並びにするために追加 */
+    justify-content: center;
+    align-items: center;
+    padding: 40px 20px;
+}
+
+.page-heading {
+    font-size: 24px;
+    margin-bottom: 25px;
+    color: #8a7c74;
+    font-family: 'Georgia', serif;
+    /* タイトルもセリフ体に */
+    font-weight: bold;
+}
+
+.register-container {
+    background-color: #ffffff;
+    padding: 50px 60px;
+    /* パディングを調整 */
+    border-radius: 4px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+    width: 100%;
+    max-width: 500px;
+    /* 少し幅を広めに */
+    text-align: center;
+}
+
+/* Form styles */
+.form-group {
+    margin-bottom: 25px;
+    text-align: left;
+}
+
+.form-label {
+    display: block;
+    margin-bottom: 10px;
+    font-size: 15px;
+    color: #8a7c74;
+    font-weight: bold;
+}
+
+.form-input {
+    width: 100%;
+    padding: 14px 16px;
+    border: none;
+    background-color: #f4f4f4;
+    /* 入力欄の背景色 */
+    border-radius: 2px;
+    font-size: 14px;
+    color: #333;
+}
+
+.form-input::placeholder {
+    color: #c4c4c4;
+    font-size: 13px;
+}
+
+.register-button {
+    width: 120px;
+    /* ボタンの幅を固定 */
+    padding: 12px;
+    border: none;
+    border-radius: 2px;
+    background-color: #7d6c61;
+    /* ボタンの濃い茶色 */
+    color: #ffffff;
+    font-size: 14px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    margin-top: 10px;
+}
+
+.register-button:hover {
+    background-color: #6b5a50;
+}

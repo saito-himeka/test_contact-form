@@ -1,8 +1,8 @@
 /* Header styles */
-header {
-    border-bottom:3px solid #f4f1eb;
+/*header {
+    border-bottom:3px solid #f4f1eb;*/
     /* 背景と色を合わせる */
-    padding: 20px 0;
+   /* padding: 20px 0;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -13,4 +13,100 @@ header {
     font-weight: bold;
     color: #8a7c74;
     font-family: 'Georgia', serif;
+}*/
+
+/* ====================================
+   基本設定
+==================================== */
+body {
+    font-family: 'Helvetica Neue', Arial, sans-serif;
+    background-color: #f4f1eb;
+    /* メインのベージュ背景色 */
+    color: #8a7c74;
+    /* 基本のテキストの色 */
+}
+
+/* フォームやコンテンツを囲む中央寄せのコンテナ */
+.container {
+    width: 100%;
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 0 20px 50px;
+}
+
+/* ====================================
+   ヘッダー (Header) のスタイル
+==================================== */
+header {
+    background-color: #f4f1eb;
+    padding: 30px 40px;
+    /* 上下のパディングを調整 */
+    display: flex;
+    justify-content: space-between;
+    /* ロゴとボタンを左右に配置 */
+    align-items: center;
+}
+
+/* 共通タイトル (FashionablyLate) のスタイル */
+.header-title {
+    font-size: 26px;
+    font-weight: bold;
+    color: #8a7c74;
+    /* ロゴの茶色 */
+    font-family: 'Georgia', serif;
+    /* 上品なフォント */
+}
+
+/* 右側のボタンエリアの配置 */
+.header-right-area {
+    /* 必要に応じて、ボタンのコンテナとしてのスタイルを記述 */
+}
+
+/* ログイン/登録などの共通ボタンのスタイル (login, register) */
+.header-btn {
+    display: block;
+    padding: 8px 15px;
+    border: 1px solid #8a7c74;
+    /* 茶色の細い枠線 */
+    border-radius: 2px;
+    background-color: transparent;
+    color: #8a7c74;
+    /* 文字色は茶色 */
+    font-size: 14px;
+    text-decoration: none;
+    /* 下線を消す */
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.header-btn:hover {
+    background-color: #e8e4dc;
+    /* ホバーで少し色を濃くする */
+}
+
+
+/* ログアウトボタンのスタイル */
+.logout-btn {
+    /* logoutボタンはheader-btnのスタイルを継承しつつ、
+       画像では枠線が薄く、背景も透明に近いので、そのスタイルを調整 */
+    padding: 8px 15px;
+    border: 1px solid #c9c3be;
+    /* 薄いグレーの枠線 */
+    border-radius: 2px;
+    background-color: transparent;
+    color: #a09790;
+    /* 文字色は薄い茶色 */
+    font-size: 14px;
+    cursor: pointer;
+    text-decoration: none;
+    transition: all 0.2s ease;
+}
+
+.logout-btn:hover {
+    background-color: #f0ebe4;
+}
+
+/* ヘッダーのボタンがformタグ内にある場合の調整 */
+.header-right-area form {
+    margin: 0;
 }

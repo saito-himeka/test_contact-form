@@ -13,10 +13,12 @@ class ContactController extends Controller
 
         $categories = Category::all();
 
-        return view('index', compact('categories'));
+        return view('contact.index', compact('categories'));
     }
 
     public function confirm(ContactRequest $request){
+
+        $tel = $request->tel1 . $request->tel2 . $request->tel3;
 
         //フォームの値の取得
         $contact = $request->only([
@@ -24,9 +26,6 @@ class ContactController extends Controller
         'first_name',
         'gender',
         'email',
-        'tel1',
-        'tel2',
-        'tel3',
         'address',
         'building',
         'category_id',
@@ -34,7 +33,7 @@ class ContactController extends Controller
         ]);
 
         //電話番号まわり
-        $contact['tel'] = $request->tel1 . $request->tel2 . $request->tel3;
+        $contact['tel'] = $tel;
 
         //category表示用の処理
         $category = Category::find($request->category_id);
@@ -47,20 +46,32 @@ class ContactController extends Controller
         3 => 'その他'
         ];
         $contact['gender_name'] = $genders[$request->gender] ?? '未選択';
-        return view('confirm', compact('contact'));
+
+        return view('contact.confirm', compact('contact'));
     }
 
-    public function store2(Request $request)
+    public function store(Request $request)
     {
-        // ★ 本番ではここで DB 保存します
-        // Contact::create($request->all());
+        $contact = $request->only([
+            'last_name',
+            'first_name',
+            'gender',
+            'email',
+            'tel',
+            'address',
+            'building',
+            'category_id',
+            'detail'
+        ]);
+
+        Contact::create($contact);
 
         return redirect('/thanks'); // ← PRG の超重要ポイント！
     }
 
     public function thanks()
     {
-        return view('thanks');
+        return view('contact.thanks');
     }
 }
 /*

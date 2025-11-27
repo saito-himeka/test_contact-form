@@ -1,11 +1,4 @@
-/* ベーススタイル（共通設定がある場合は調整してください） */
-body {
-    font-family: 'Helvetica Neue', Arial, sans-serif;
-    background-color: #f4f1eb;
-    /* メインのベージュ背景 */
-    color: #8a7c74;
-    margin: 0;
-}
+
 
 /* レイアウトユーティリティ */
 .container {

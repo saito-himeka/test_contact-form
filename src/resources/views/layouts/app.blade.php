@@ -14,7 +14,31 @@
 
 <body>
     <header>
-        <div class="header-title">FashionablyLate</div>
+    <div class="header-title">FashionablyLate</div>
+    
+    <div class="header-right-area">
+        <!-- 💡 ここで現在のルート名や認証状態をチェックしてボタンを切り替える -->
+        
+        @if (Request::routeIs('login')) 
+            <!-- ログインページの場合: 会員登録ボタンを表示 -->
+            <a href="{{ route('register') }}" class="header-btn">register</a>
+            
+        @elseif (Request::routeIs('register')) 
+            <!-- 会員登録ページの場合: ログインボタンを表示 -->
+            <a href="{{ route('login') }}" class="header-btn">login</a>
+            
+        @elseif (Request::routeIs('admin')) 
+            <!-- 管理者ページの場合: ログアウトボタンを表示 -->
+            <form action="{{ route('logout') }}" method="POST">
+                @csrf
+                <button type="submit" class="logout-btn">logout</button>
+            </form>
+            
+        @else 
+            <!-- お問い合わせページなど、その他のページではボタンを非表示 (または別のボタンを表示) -->
+            <div style="width: 80px;"></div> <!-- レイアウトを保つための調整 -->
+            
+        @endif
     </header>
 
     <main>

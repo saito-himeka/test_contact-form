@@ -2,6 +2,7 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\ContactController;
+use App\Http\Controllers\AuthController;
 
 /*
 |--------------------------------------------------------------------------
@@ -13,13 +14,13 @@ use App\Http\Controllers\ContactController;
 | contains the "web" middleware group. Now create something great!
 |
 */
-
+Route::get('/', [ContactController::class, 'index']);
 Route::post('/confirm', [ContactController::class, 'confirm']);
-Route::post('/store2', [ContactController::class, 'store2']);
+Route::post('/store', [ContactController::class, 'store']);
 Route::get('/thanks', [ContactController::class, 'thanks']);
 
+Route::get('/admin', [AuthController::class, 'admin']);
 
-Route::get('/', [ContactController::class, 'index']);
 /*Route::post('/confirm', [ContactController::class, 'confirm']);
 
 Route::post('/store', [ContactController::class, 'store'])->name('contact.store');*/
