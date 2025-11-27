@@ -1,64 +1,130 @@
-
-.confirm__content {
-    margin: 0 auto;
-    padding: 30px 15px;
-    max-width: 1230px;
+/* ベーススタイル（共通設定がある場合は調整してください） */
+body {
+    font-family: 'Helvetica Neue', Arial, sans-serif;
+    background-color: #f4f1eb;
+    /* メインのベージュ背景 */
+    color: #8a7c74;
+    margin: 0;
 }
 
-.confirm__heading {
-    margin-bottom: 40px;
+/* レイアウトユーティリティ */
+.container {
+    width: 100%;
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 40px 20px;
+}
+
+/* タイトル */
+.page-title {
     text-align: center;
+    font-size: 24px;
+    color: #8a7c74;
+    font-family: 'Georgia', serif;
+    margin-bottom: 40px;
 }
 
-.form {
-    margin: 0 auto;
-    width: 70%;
-}
-
+/* テーブルデザイン */
 .confirm-table {
-    border: 1px solid #ddd;
+    width: 100%;
+    background-color: #ffffff;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
+    margin-bottom: 40px;
 }
 
 .confirm-table__inner {
     width: 100%;
+    border-collapse: collapse;
 }
 
+/* 左側のヘッダーセル（項目名） */
 .confirm-table__header {
-    padding: 15px;
-    width: 20%;
-    border-bottom: 1px solid #ddd;
-    background-color: #eee;
-    font-weight: bold;
+    width: 30%;
+    background-color: #e0dcd9;
+    /* 画像に合わせた濃いベージュ */
+    color: #ffffff;
+    font-weight: normal;
+    padding: 20px 40px;
+    text-align: left;
+    border-bottom: 1px solid #ffffff;
+    /* 白い区切り線 */
 }
 
+/* 右側のデータセル（値） */
 .confirm-table__text {
-    padding: 15px;
-    border-bottom: 1px solid #ddd;
+    width: 70%;
+    background-color: #ffffff;
+    padding: 20px 40px;
+    border-bottom: 1px solid #f0f0f0;
+    /* 薄いグレーの区切り線 */
 }
 
-.confirm-table__text input {
-    width: 100%;
-    outline: none;
-    border: none;
-}
-
+/* 最後の行のボーダーを消す */
 .confirm-table__row:last-child .confirm-table__header,
 .confirm-table__row:last-child .confirm-table__text {
-    border-bottom-width: 0;
+    border-bottom: none;
 }
 
-.form__button {
-    margin-top: 30px;
-    text-align: center;
-}
-
-.form__button-submit {
-    padding: 10px;
-    width: 30%;
-    height: 50px;
+/* inputタグをテキストのように見せるスタイル */
+.confirm-table__text input {
+    width: 100%;
     border: none;
-    border-radius: 3px;
-    background: #82756b;
-    color: #fff;
+    /* 枠線を消す */
+    background: transparent;
+    /* 背景を透明に */
+    font-size: 15px;
+    color: #8a7c74;
+    /* テキスト色 */
+    font-family: inherit;
+    outline: none;
+    /* フォーカス時の枠線を消す */
+    pointer-events: none;
+    /* クリック不可にする（readonlyっぽさを強調） */
+
+    /* 長いテキストの省略設定（必要に応じて） */
+    white-space: pre-wrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+/* ボタンエリア */
+.button-area {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 40px;
+    margin-top: 40px;
+}
+
+/* 送信ボタン */
+.btn-submit {
+    padding: 10px 50px;
+    background-color: #7d6c61;
+    /* 濃い茶色 */
+    color: #ffffff;
+    border: none;
+    border-radius: 2px;
+    font-size: 15px;
     cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+.btn-submit:hover {
+    background-color: #6b5a50;
+}
+
+/* 修正ボタン */
+.btn-modify {
+    background-color: transparent;
+    color: #8a7c74;
+    border: none;
+    font-size: 15px;
+    cursor: pointer;
+    text-decoration: underline;
+    /* リンクのように下線を引く */
+    padding: 0;
+}
+
+.btn-modify:hover {
+    opacity: 0.7;
 }

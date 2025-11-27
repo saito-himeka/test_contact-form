@@ -14,12 +14,24 @@ use App\Http\Controllers\ContactController;
 |
 */
 
+Route::post('/confirm', [ContactController::class, 'confirm']);
+Route::post('/store2', [ContactController::class, 'store2']);
+Route::get('/thanks', [ContactController::class, 'thanks']);
+
 
 Route::get('/', [ContactController::class, 'index']);
-Route::post('/confirm', [ContactController::class, 'confirm']);
+/*Route::post('/confirm', [ContactController::class, 'confirm']);
 
-Route::post('/store', [ContactController::class, 'store']);
+Route::post('/store', [ContactController::class, 'store'])->name('contact.store');*/
 
-Route::get('/thanks', function () {
+/*Route::get('/thanks', function () {
     return view('thanks');
-});
+})->name('thanks');*/
+
+
+/*
+Route::get('/', [ContactController::class, 'index']);
+Route::post('/confirm', [ContactController::class, 'confirm']);
+Route::post('/store', [ContactController::class, 'store']);
+Route::get('/thanks', [ContactController::class, 'thanks']);
+*/

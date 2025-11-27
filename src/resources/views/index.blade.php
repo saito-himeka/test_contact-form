@@ -6,10 +6,11 @@
 
 @section('content')
 <main class="container">
-        <h2 class="page-title">Contact</h2>
+        
+    <h2 class="page-title">Contact</h2>
 
-        <form action="/confirm" method="post" novalidate>
-            @csrf
+<form action="/confirm" method="post" novalidate>
+    @csrf
     <!-----------------name---------------------->
             <div class="form-group">
                 <div class="form-label-area">
@@ -146,6 +147,14 @@
             
             <button type="submit" class="btn-confirm">確認画面</button>
             
-        </form>
+</form>
+
+{{--<h1>Index</h1>
+    <form action="/confirm" method="POST">
+    @csrf
+    <input type="text" name="name" placeholder="名前">
+    <button type="submit">確認へ</button>
+    </form>--}}
+
     </main>
 @endsection

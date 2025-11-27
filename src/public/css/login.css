@@ -1,0 +1,98 @@
+/* Header styles */ 
+header {
+    background-color: #ffffff;
+    padding: 15px 30px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+}
+
+.header-title {
+    font-size: 24px;
+    font-weight: bold;
+    color: #8a7c74;
+}
+
+.register-btn {
+    padding: 8px 16px;
+    border: 1px solid #d0c9c0;
+    background-color: transparent;
+    color: #8a7c74;
+    text-decoration: none;
+    border-radius: 4px;
+    font-size: 14px;
+}
+
+/* Main content styles */
+main {
+    flex: 1;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 20px;
+}
+
+.login-container {
+    background-color: #ffffff;
+    padding: 40px;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    width: 100%;
+    max-width: 400px;
+    /* ボックスの最大幅 */
+    text-align: center;
+}
+
+.login-title {
+    font-size: 24px;
+    margin-bottom: 30px;
+    color: #8a7c74;
+}
+
+/* Form styles */
+.form-group {
+    margin-bottom: 20px;
+    text-align: left;
+}
+
+.form-label {
+    display: block;
+    margin-bottom: 8px;
+    font-size: 16px;
+    color: #8a7c74;
+}
+
+.form-input {
+    width: 100%;
+    padding: 12px 16px;
+    border: none;
+    background-color: #f0f0f0;
+    /* 入力フィールドの薄いグレー背景 */
+    border-radius: 4px;
+    font-size: 14px;
+    color: #555;
+}
+
+/* プレースホルダーの色を変更 */
+.form-input::placeholder {
+    color: #a0a0a0;
+}
+
+.login-button {
+    width: 100%;
+    padding: 12px;
+    border: none;
+    border-radius: 4px;
+    background-color: #7d6c61;
+    /* ボタンの濃い茶色 */
+    color: #ffffff;
+    font-size: 16px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.login-button:hover {
+    background-color: #6b5a50;
+    /* ホバー時の少し濃い色 */
+}
