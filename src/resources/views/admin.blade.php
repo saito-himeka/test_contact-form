@@ -21,11 +21,11 @@
             <input type="text" name="search_keyword" class="input-text" placeholder="名前やメールアドレスを入力してください" value="{{ request('search_keyword') }}">
             
             <!-- 3: 性別 -->
-            <select class="select-box">
+            <select class="select-box" name="gender">
                 <option value="">性別</option>
-                <option value=""男性" {{ request('gender') == '男性' ? 'selected' : '' }}">男性</option>
-                <option value=""女性" {{ request('gender') == '女性' ? 'selected' : '' }}">女性</option>
-                <option value=""その他" {{ request('gender') == 'その他' ? 'selected' : '' }}">その他</option>
+                <option value="1" {{ request('gender') == '1' ? 'selected' : '' }}>男性</option>
+                <option value="2" {{ request('gender') == '2' ? 'selected' : '' }}>女性</option>
+                <option value="3" {{ request('gender') == '3' ? 'selected' : '' }}>その他</option>
             </select>
 
             <!-- 4: お問い合わせの種類 (動的生成 & category_idを使用) -->
@@ -47,7 +47,7 @@
                 <option value="">年/月/日</option>
             </select>--}}
 
-            <button type="button" class="btn-search">検索</button>
+            <button type="submit" class="btn-search">検索</button>
 
             <!-- リセットボタン (検索パラメータなしでGETリクエスト) -->
             <a href="{{ route('admin.index') }}">
@@ -83,7 +83,7 @@
                     <tr data-contact-details="{{ json_encode([
                         'id' => $contact->id,
                         'name' => $contact->last_name . ' ' . $contact->first_name,
-                        'gender' => $contact->gender,
+                        'gender' => $contact->gender_jp,
                         'email' => $contact->email,
                         'tel' => $contact->tel,
                         'address' => $contact->address,
@@ -103,8 +103,8 @@
                             <form action="{{ route('admin.contacts.destroy', $contact) }}" method="POST" style="display:inline;" onsubmit="return confirm('お問い合わせID: {{ $contact->id }} を本当に削除しますか？');">
                                 @csrf
                                 @method('DELETE')
-                                <button type="submit" class="btn-delete">削除</button>--}}
-                            </form>
+                                <button type="submit" class="btn-delete">削除</button>
+                            </form>--}}
                         </td>
                     </tr>
                     @endforeach
@@ -136,24 +136,58 @@
     // FN023, FN025: モーダル表示/非表示ロジック
     const modal = document.getElementById('contact-modal');
     const modalDetails = document.getElementById('modal-details');
+    const triggerButtons = document.querySelectorAll('.js-modal-trigger');
+    const closeButton = document.getElementById('modal-close-btn');
+    const deleteForm = document.getElementById('delete-form');
+    // Laravelのルーティングヘルパー関数がJSから使えないため、削除ルートのベースをここで定義
+    const deleteRouteBase = "{{ route('admin.contacts.destroy', ['contact' => 'DUMMY_ID']) }}";
+
 
     function openModal(button) {
         const row = button.closest('tr');
-        const data = JSON.parse(row.dataset.contactDetails);
+        if (!row) return;
+
+        let data = {};
+        try {
+            data = JSON.parse(row.dataset.contactDetails);
+        } catch (e) {
+            console.error("JSONデータのパースエラー:", e);
+            return;
+        }
 
         // 詳細情報のHTMLを生成
         modalDetails.innerHTML = `
-            <div class="modal-detail-row"><div class="modal-detail-label">ID</div><div class="modal-detail-value">${data.id}</div></div>
-            <div class="modal-detail-row"><div class="modal-detail-label">お名前</div><div class="modal-detail-value">${data.name}</div></div>
-            <div class="modal-detail-row"><div class="modal-detail-label">性別</div><div class="modal-detail-value">${data.gender}</div></div>
-            <div class="modal-detail-row"><div class="modal-detail-label">メールアドレス</div><div class="modal-detail-value">${data.email}</div></div>
-            <div class="modal-detail-row"><div class="modal-detail-label">電話番号</div><div class="modal-detail-value">${data.tel || 'N/A'}</div></div>
-            <div class="modal-detail-row"><div class="modal-detail-label">住所</div><div class="modal-detail-value">${data.address || 'N/A'}</div></div>
-            <div class="modal-detail-row"><div class="modal-detail-label">建物名</div><div class="modal-detail-value">${data.building || 'N/A'}</div></div>
-            <div class="modal-detail-row"><div class="modal-detail-label">お問い合わせの種類</div><div class="modal-detail-value">${data.category}</div></div>
-            <div class="modal-detail-row"><div class="modal-detail-label">お問い合わせ内容</div><div class="modal-detail-value">${data.detail}</div></div>
+            <div class="modal-detail-row">
+                <div class="modal-detail-label">お名前</div><div class="modal-detail-value">${data.name}</div>
+            </div>
+            <div class="modal-detail-row">
+                <div class="modal-detail-label">性別</div><div class="modal-detail-value">${data.gender}</div>
+            </div>
+            <div class="modal-detail-row">
+                <div class="modal-detail-label">メールアドレス</div><div class="modal-detail-value">${data.email}</div>
+            </div>
+            <div class="modal-detail-row">
+                <div class="modal-detail-label">電話番号</div><div class="modal-detail-value">${data.tel || 'N/A'}</div>
+            </div>
+            <div class="modal-detail-row">
+                <div class="modal-detail-label">住所</div><div class="modal-detail-value">${data.address || 'N/A'}</div>
+            </div>
+            <div class="modal-detail-row">
+                <div class="modal-detail-label">建物名</div><div class="modal-detail-value">${data.building || 'N/A'}</div>
+            </div>
+            <div class="modal-detail-row">
+                <div class="modal-detail-label">お問い合わせの種類</div><div class="modal-detail-value">${data.category}</div>
+            </div>
+            <div class="modal-detail-row detail-content-row">
+                <div class="modal-detail-label">お問い合わせ内容</div><div class="modal-detail-value detail-content-value">${data.detail}</div>
+            </div>
         `;
         
+        // 削除フォームの action URL を設定
+        // DUMMY_ID を実際のIDに置き換える
+        const deleteUrl = deleteRouteBase.replace('DUMMY_ID', data.id);
+        deleteForm.setAttribute('action', deleteUrl);
+
         modal.style.display = 'flex'; // モーダルを表示
     }
 
@@ -161,11 +195,24 @@
         modal.style.display = 'none'; // モーダルを非表示
     }
 
-    // モーダル外をクリックで閉じる処理
-    window.onclick = function(event) {
-        if (event.target === modal) {
-            closeModal();
+    // ページ読み込み完了後にイベントリスナーを設定
+    document.addEventListener('DOMContentLoaded', () => {
+        // 1. 詳細ボタンにクリックイベントを設定
+        triggerButtons.forEach(button => {
+            button.addEventListener('click', function() {
+                openModal(this);
+            });
+        });
+
+        // 2. 閉じるボタンにイベントを設定
+        closeButton.addEventListener('click', closeModal);
+
+        // 3. モーダル外をクリックで閉じる処理
+        window.onclick = function(event) {
+            if (event.target === modal) {
+                closeModal();
+            }
         }
-    }
+    });
 </script>
 @endsection

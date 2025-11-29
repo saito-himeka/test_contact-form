@@ -14,14 +14,12 @@ header {
     justify-content: space-between;
     align-items: center;
     border-bottom: 1px solid #f0f0f0;
-    /* 薄い境界線 */
     margin-bottom: 30px;
 }
 
 .header-inner {
     width: 100%;
     max-width: 1200px;
-    /* メインコンテンツと幅を合わせる */
     margin: 0 auto;
     padding: 0 20px;
     display: flex;
@@ -34,14 +32,13 @@ header {
     font-weight: bold;
     color: #8a7c74;
     font-family: 'Georgia', serif;
-    /* ロゴを画面中央に寄せるための調整（ヘッダー全体がflexなので、厳密な中央にはならないが画像に合わせる） */
     margin-left: auto;
     margin-right: auto;
     transform: translateX(40px);
-    /* 右側のボタン分だけ少しずらす視覚調整 */
 }
 
-.logout-btn {
+/* Logout button (一般的なボタンデザインに修正) */
+button[type="submit"] {
     padding: 8px 16px;
     border: 1px solid #d0c9c0;
     background-color: #fcfcfc;
@@ -49,9 +46,10 @@ header {
     text-decoration: none;
     font-size: 14px;
     transition: all 0.3s;
+    cursor: pointer;
 }
 
-.logout-btn:hover {
+button[type="submit"]:hover {
     background-color: #f0f0f0;
 }
 
@@ -71,7 +69,6 @@ header {
     gap: 15px;
     margin-bottom: 30px;
     flex-wrap: wrap;
-    /* 画面が狭いときに折り返す */
 }
 
 .input-text {
@@ -101,7 +98,6 @@ header {
 
 .btn-search {
     background-color: #8a7c74;
-    /* 濃い茶色 */
     color: #fff;
     border: none;
     padding: 10px 30px;
@@ -111,14 +107,16 @@ header {
 }
 
 .btn-reset {
+    display: inline-block;
     background-color: #e0dcd9;
-    /* 薄いベージュ */
     color: #fff;
     border: none;
     padding: 10px 30px;
     border-radius: 2px;
     cursor: pointer;
     font-size: 14px;
+    text-decoration: none;
+    text-align: center;
 }
 
 /* Action Bar (Export & Pagination) */
@@ -131,8 +129,13 @@ header {
 }
 
 .btn-export {
+    /* <button>要素の親として <a href> が使われているため、親要素のスタイルを調整 */
+    padding: 0;
+    text-decoration: none;
+}
+
+.btn-export button {
     background-color: #e0dcd9;
-    /* 薄いベージュ */
     color: #8a7c74;
     border: none;
     padding: 8px 25px;
@@ -145,26 +148,6 @@ header {
 .pagination {
     display: flex;
     gap: 5px;
-}
-
-.page-link {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    width: 30px;
-    height: 30px;
-    border: 1px solid #eee;
-    background-color: #fff;
-    color: #8a7c74;
-    text-decoration: none;
-    font-size: 14px;
-    border-radius: 2px;
-}
-
-.page-link.active {
-    background-color: #8a7c74;
-    color: #fff;
-    border-color: #8a7c74;
 }
 
 /* Table */
@@ -188,35 +171,27 @@ th {
     padding: 16px;
     font-weight: normal;
     text-align: center;
-    /* ヘッダーは中央揃え */
 }
 
-/* 列幅の調整（画像に基づく推測） */
 th:nth-child(1) {
     width: 20%;
 }
 
-/* 名前 */
 th:nth-child(2) {
     width: 10%;
 }
 
-/* 性別 */
 th:nth-child(3) {
     width: 30%;
 }
 
-/* メール */
 th:nth-child(4) {
     width: 30%;
 }
 
-/* 種類 */
 th:nth-child(5) {
     width: 10%;
 }
-
-/* 詳細ボタン */
 
 td {
     padding: 20px 10px;
@@ -229,17 +204,153 @@ td {
 .btn-detail {
     display: inline-block;
     padding: 6px 16px;
-    border: 1px solid #e0e0e0;
+    border: 1px solid #d0c9c0;
     background-color: #fff;
-    color: #ccc;
-    /* 画像ではかなり薄いグレー/ベージュ */
+    color: #8a7c74;
     text-decoration: none;
     font-size: 12px;
     border-radius: 2px;
     transition: all 0.3s;
+    cursor: pointer;
 }
 
 .btn-detail:hover {
-    border-color: #8a7c74;
+    background-color: #f0f0f0;
+}
+
+
+/* --- モーダル関連のCSS --- */
+
+/* FN021: Hover機能 */
+.table-container table tbody tr:hover {
+    background-color: #f0f8ff;
+    cursor: pointer;
+}
+
+/* FN023, FN025: モーダルウィンドウの基本スタイル */
+.modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5);
+    display: none;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+}
+
+.modal-content {
+    background: white;
+    padding: 40px;
+    /* パディングを増やし、ゆとりを持たせる */
+    border-radius: 8px;
+    width: 90%;
+    max-width: 600px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+    position: relative;
+    max-height: 90vh;
+    overflow-y: auto;
+}
+
+.modal-close {
+    position: absolute;
+    top: 15px;
+    right: 15px;
+    font-size: 24px;
+    cursor: pointer;
+    border: none;
+    background: none;
+    color: #999;
+    padding: 5px;
+    line-height: 1;
+}
+
+.modal-close:hover {
+    color: #333;
+}
+
+/* ラベルと値を横並びにするためのスタイル */
+.modal-detail-row {
+    display: grid;
+    /* 参照画像に合わせて、ラベルと値の2カラム構成 */
+    grid-template-columns: 150px 1fr;
+    gap: 10px;
+    padding: 10px 0;
+    border-bottom: 1px solid #f0f0f0;
+    /* 薄い線で区切る */
+    align-items: start;
+}
+
+.modal-detail-row:last-of-type {
+    border-bottom: none;
+}
+
+.modal-detail-label {
+    font-weight: normal;
+    /* 画像に合わせて太字を解除 */
     color: #8a7c74;
+    /* ラベルの色をブランドカラーに */
+    padding-right: 10px;
+    text-align: right;
+    /* ラベルを右寄せ */
+}
+
+.modal-detail-value {
+    color: #333;
+    line-height: 1.5;
+    text-align: left;
+    word-break: break-word;
+}
+
+/* 削除ボタンエリア */
+.delete-area {
+    text-align: center;
+    margin-top: 30px;
+    padding-top: 20px;
+    border-top: 1px solid #f0f0f0;
+}
+
+.btn-delete-modal {
+    background-color: #d9534f;
+    /* 赤系 */
+    color: #fff;
+    border: none;
+    padding: 10px 40px;
+    border-radius: 2px;
+    cursor: pointer;
+    font-size: 14px;
+    font-weight: bold;
+    transition: background-color 0.3s;
+}
+
+.btn-delete-modal:hover {
+    background-color: #c9302c;
+}
+
+/* --- レスポンシブ対応 --- */
+@media (max-width: 768px) {
+    .modal-content {
+        padding: 20px;
+    }
+
+    /* モバイルでは縦積みに戻す */
+    .modal-detail-row {
+        grid-template-columns: 1fr;
+        gap: 0;
+        padding: 8px 0;
+    }
+
+    .modal-detail-label {
+        width: 100%;
+        margin-bottom: 4px;
+        text-align: left;
+        /* ラベルを左寄せに戻す */
+    }
+
+    .modal-detail-value {
+        padding-left: 10px;
+        /* 値を少しインデント */
+    }
 }
