@@ -61,4 +61,5 @@ php artisan migrate
 
 
 ## ER図
-![ER図](docs/ER_diagram.png)
+![ER図](https://raw.githubusercontent.com/saito-himeka/test_contact-form/main/docs/ER_diagram.png)
+
