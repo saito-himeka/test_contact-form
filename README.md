@@ -35,7 +35,12 @@ cp .env.example .env
 php artisan key:generate
 ```
 
-6. **データベースをマイグレーション**
+6. **ストレージ・キャッシュの権限設定**
+```bash
+chmod -R 777 storage bootstrap/cache
+```
+
+7. **データベースをマイグレーション**
 ```bash
 php artisan migrate
 ```
