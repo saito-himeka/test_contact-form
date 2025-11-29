@@ -61,5 +61,44 @@ php artisan migrate
 
 
 ## ER図
-![ER図](https://raw.githubusercontent.com/saito-himeka/test_contact-form/main/docs/ER_diagram.png)
+## ER図
 
+```mermaid
+erDiagram
+    categories {
+        bigint id PK "お問い合わせの種類のID"
+        varchar(255) content "お問い合わせ内容の選択肢"
+        timestamp created_at
+        timestamp updated_at
+    }
+    
+    contacts {
+        bigint id PK "お問い合わせID"
+        bigint category_id FK "お問い合わせ種類ID"
+        varchar(255) first_name "姓"
+        varchar(255) last_name "名"
+        tinyint gender "性別 (1:男性, 2:女性, 3:その他)"
+        varchar(255) email "メールアドレス"
+        varchar(255) tel "電話番号"
+        varchar(255) address "住所"
+        varchar(255) building "建物名など"
+        text detail "お問い合わせ詳細"
+        timestamp created_at
+        timestamp updated_at
+    }
+
+    users {
+        bigint id PK "ユーザーID"
+        varchar(255) name "ユーザー名"
+        varchar(255) email "メールアドレス"
+        varchar(255) password "パスワード"
+        timestamp created_at
+        timestamp updated_at
+    }
+
+    # リレーションの定義: contactsテーブルはcategoriesテーブルのcategory_idに依存する
+    # 一つのカテゴリ（お問い合わせの種類）に、複数のcontacts（お問い合わせ）が紐づく
+    categories ||--o{ contacts : has
+    
+    # ※備考: usersテーブルとcontactsテーブルの間にリレーションがないため、ここでは定義していません。
+    # ユーザーがログインして問い合わせる場合は、usersテーブルからcontactsテーブルへのFKが必要になります。
