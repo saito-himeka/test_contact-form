@@ -96,3 +96,7 @@ main {
     background-color: #6b5a50;
     /* ホバー時の少し濃い色 */
 }
+
+.login-error {
+    color: red;
+}

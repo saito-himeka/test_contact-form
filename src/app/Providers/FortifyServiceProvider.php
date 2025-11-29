@@ -12,6 +12,13 @@ use Illuminate\Support\Facades\RateLimiter;
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Support\Str;
 use Laravel\Fortify\Fortify;
+use App\Http\Responses\LoginResponse;
+use App\Http\Responses\RegisterResponse;
+use App\Http\Responses\LogoutResponse;
+use Laravel\Fortify\Contracts\LogoutResponse as LogoutResponseContract;
+
+
+
 
 class FortifyServiceProvider extends ServiceProvider
 {
@@ -47,6 +54,20 @@ class FortifyServiceProvider extends ServiceProvider
 
             return Limit::perMinute(10)->by($email . $request->ip());
         });
+
+        $this->app->singleton(
+        \Laravel\Fortify\Contracts\LoginResponse::class,
+        LoginResponse::class
+        );
+
+        $this->app->singleton(
+        \Laravel\Fortify\Contracts\RegisterResponse::class,
+        RegisterResponse::class
+        );
+
+        $this->app->singleton(LogoutResponseContract::class, LogoutResponse::class);
+
+
 
         /*
         Fortify::updateUserProfileInformationUsing(UpdateUserProfileInformation::class);

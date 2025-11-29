@@ -124,3 +124,7 @@ main {
 .register-button:hover {
     background-color: #6b5a50;
 }
+
+.error {
+    color: red;
+}

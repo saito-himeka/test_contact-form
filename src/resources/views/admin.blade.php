@@ -5,44 +5,65 @@
 @endsection
 
 @section('content')
+<form action="{{ route('logout') }}" method="POST">
+    @csrf
+    <button type="submit">ログアウト</button>
+</form>
+
 <main class="container">
         <h2 class="page-title">Admin</h2>
 
-        <form class="search-form">
-            <input type="text" class="input-text" placeholder="名前やメールアドレスを入力してください">
+    <!-------------検索フォーム------------->
+        <form class="search-form" action="{{ route('admin.index') }}" method="GET">
+            @csrf
+
+            <!-- 1, 2: 名前・メールアドレス検索 (一つのinputにまとめる) -->
+            <input type="text" name="search_keyword" class="input-text" placeholder="名前やメールアドレスを入力してください" value="{{ request('search_keyword') }}">
             
+            <!-- 3: 性別 -->
             <select class="select-box">
                 <option value="">性別</option>
-                <option value="male">男性</option>
-                <option value="female">女性</option>
-                <option value="other">その他</option>
+                <option value=""男性" {{ request('gender') == '男性' ? 'selected' : '' }}">男性</option>
+                <option value=""女性" {{ request('gender') == '女性' ? 'selected' : '' }}">女性</option>
+                <option value=""その他" {{ request('gender') == 'その他' ? 'selected' : '' }}">その他</option>
             </select>
 
-            <select class="select-box">
+            <!-- 4: お問い合わせの種類 (動的生成 & category_idを使用) -->
+            <select name="category_id" class="select-box">
                 <option value="">お問い合わせの種類</option>
-                <option value="1">商品の交換について</option>
-                <option value="2">返品について</option>
-                <option value="3">その他</option>
+                @foreach($categories as $category)
+                <option 
+                    value="{{ $category->id }}" 
+                    {{ (int)request('category_id') === $category->id ? 'selected' : '' }}
+                >
+                    {{ $category->content }}
+                </option>
+            @endforeach
             </select>
 
-            <select class="select-box">
+            <!-- 5: 日付 -->
+            <input type="date" name="date" class="select-box" value="{{ request('date') }}">
+            {{--<select class="select-box">
                 <option value="">年/月/日</option>
-            </select>
+            </select>--}}
 
             <button type="button" class="btn-search">検索</button>
+
+            <!-- リセットボタン (検索パラメータなしでGETリクエスト) -->
+            <a href="{{ route('admin.index') }}">
             <button type="button" class="btn-reset">リセット</button>
+            </a>
         </form>
 
         <div class="action-bar">
-            <button class="btn-export">エクスポート</button>
+            <!-- FN024: エクスポートボタン (現在の検索条件を渡す) -->
+            <a href="{{ route('admin.contacts.export', request()->query()) }}" class="btn-export">
+                <button class="btn-export">エクスポート</button>
+            </a>
+            <!-- FN021: ページネーションリンク -->
             <div class="pagination">
-                <a href="#" class="page-link">&lt;</a>
-                <a href="#" class="page-link active">1</a>
-                <a href="#" class="page-link">2</a>
-                <a href="#" class="page-link">3</a>
-                <a href="#" class="page-link">4</a>
-                <a href="#" class="page-link">5</a>
-                <a href="#" class="page-link">&gt;</a>
+                {{ $contacts->links('vendor.pagination.default') }} 
+                {{-- default テンプレートを使用 (環境に合わせて変更) --}}
             </div>
         </div>
 
@@ -57,57 +78,94 @@
                         <th></th> </tr>
                 </thead>
                 <tbody>
-                    <tr>
+                    <!-- FN021: 動的な一覧表示 -->
+                    @foreach ($contacts as $contact)
+                    <tr data-contact-details="{{ json_encode([
+                        'id' => $contact->id,
+                        'name' => $contact->last_name . ' ' . $contact->first_name,
+                        'gender' => $contact->gender,
+                        'email' => $contact->email,
+                        'tel' => $contact->tel,
+                        'address' => $contact->address,
+                        'building' => $contact->building,
+                        'category' => $contact->category->content ?? '不明',
+                        'detail' => $contact->detail,
+                    ]) }}">
+                        <td>{{ $contact->last_name }} {{ $contact->first_name }}</td>
+                        <td>{{ $contact->gender_jp }}</td>
+                        <td>{{ $contact->email }}</td>
+                        <td>{{ $contact->category->content ?? '不明' }}</td>
+                        <td>
+                            <!-- FN023: 詳細ボタン -->
+                            <button type="button" class="btn-detail" onclick="openModal(this)">詳細</button>
+                            {{--
+                            <!-- FN026: 削除ボタン -->
+                            <form action="{{ route('admin.contacts.destroy', $contact) }}" method="POST" style="display:inline;" onsubmit="return confirm('お問い合わせID: {{ $contact->id }} を本当に削除しますか？');">
+                                @csrf
+                                @method('DELETE')
+                                <button type="submit" class="btn-delete">削除</button>--}}
+                            </form>
+                        </td>
+                    </tr>
+                    @endforeach
+                    {{--<tr>
                         <td>山田 太郎</td>
                         <td>男性</td>
                         <td>test@example.com</td>
                         <td>商品の交換について</td>
                         <td><a href="#" class="btn-detail">詳細</a></td>
-                    </tr>
-                    <tr>
-                        <td>山田 太郎</td>
-                        <td>男性</td>
-                        <td>test@example.com</td>
-                        <td>商品の交換について</td>
-                        <td><a href="#" class="btn-detail">詳細</a></td>
-                    </tr>
-                    <tr>
-                        <td>山田 太郎</td>
-                        <td>男性</td>
-                        <td>test@example.com</td>
-                        <td>商品の交換について</td>
-                        <td><a href="#" class="btn-detail">詳細</a></td>
-                    </tr>
-                    <tr>
-                        <td>山田 太郎</td>
-                        <td>男性</td>
-                        <td>test@example.com</td>
-                        <td>商品の交換について</td>
-                        <td><a href="#" class="btn-detail">詳細</a></td>
-                    </tr>
-                    <tr>
-                        <td>山田 太郎</td>
-                        <td>男性</td>
-                        <td>test@example.com</td>
-                        <td>商品の交換について</td>
-                        <td><a href="#" class="btn-detail">詳細</a></td>
-                    </tr>
-                    <tr>
-                        <td>山田 太郎</td>
-                        <td>男性</td>
-                        <td>test@example.com</td>
-                        <td>商品の交換について</td>
-                        <td><a href="#" class="btn-detail">詳細</a></td>
-                    </tr>
-                    <tr>
-                        <td>山田 太郎</td>
-                        <td>男性</td>
-                        <td>test@example.com</td>
-                        <td>商品の交換について</td>
-                        <td><a href="#" class="btn-detail">詳細</a></td>
-                    </tr>
+                    </tr>--}}
+                    
                 </tbody>
             </table>
         </div>
     </main>
+
+<!-- FN023, FN025: モーダルウィンドウのHTML構造 -->
+<div id="contact-modal" class="modal-overlay">
+    <div class="modal-content">
+        <button class="modal-close" onclick="closeModal()">×</button>
+        <h3>お問い合わせ詳細</h3>
+        <div id="modal-details">
+            <!-- 詳細データがここにJSで挿入されます -->
+        </div>
+    </div>
+</div>
+
+<script>
+    // FN023, FN025: モーダル表示/非表示ロジック
+    const modal = document.getElementById('contact-modal');
+    const modalDetails = document.getElementById('modal-details');
+
+    function openModal(button) {
+        const row = button.closest('tr');
+        const data = JSON.parse(row.dataset.contactDetails);
+
+        // 詳細情報のHTMLを生成
+        modalDetails.innerHTML = `
+            <div class="modal-detail-row"><div class="modal-detail-label">ID</div><div class="modal-detail-value">${data.id}</div></div>
+            <div class="modal-detail-row"><div class="modal-detail-label">お名前</div><div class="modal-detail-value">${data.name}</div></div>
+            <div class="modal-detail-row"><div class="modal-detail-label">性別</div><div class="modal-detail-value">${data.gender}</div></div>
+            <div class="modal-detail-row"><div class="modal-detail-label">メールアドレス</div><div class="modal-detail-value">${data.email}</div></div>
+            <div class="modal-detail-row"><div class="modal-detail-label">電話番号</div><div class="modal-detail-value">${data.tel || 'N/A'}</div></div>
+            <div class="modal-detail-row"><div class="modal-detail-label">住所</div><div class="modal-detail-value">${data.address || 'N/A'}</div></div>
+            <div class="modal-detail-row"><div class="modal-detail-label">建物名</div><div class="modal-detail-value">${data.building || 'N/A'}</div></div>
+            <div class="modal-detail-row"><div class="modal-detail-label">お問い合わせの種類</div><div class="modal-detail-value">${data.category}</div></div>
+            <div class="modal-detail-row"><div class="modal-detail-label">お問い合わせ内容</div><div class="modal-detail-value">${data.detail}</div></div>
+        `;
+        
+        modal.style.display = 'flex'; // モーダルを表示
+    }
+
+    function closeModal() {
+        modal.style.display = 'none'; // モーダルを非表示
+    }
+
+    // モーダル外をクリックで閉じる処理
+    window.onclick = function(event) {
+        if (event.target === modal) {
+            closeModal();
+        }
+    }
+</script>
 @endsection

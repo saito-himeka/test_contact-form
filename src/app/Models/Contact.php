@@ -20,4 +20,23 @@ class Contact extends Model
         'category_id',
         'detail'
     ];
+
+    /**
+     * Categoryモデルとのリレーションを定義
+     */
+    public function category()
+    {
+        // category_idを外部キーとして使用
+        return $this->belongsTo(Category::class);
+    }
 }
+
+const GENDER_MAP = [
+
+'1' => '男性',
+
+'2' => '女性',
+
+'3' => 'その他',
+
+];
