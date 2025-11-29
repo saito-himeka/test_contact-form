@@ -94,5 +94,4 @@ erDiagram
         timestamp updated_at
     }
 
-    # リレーションの定義: contactsテーブルはcategoriesテーブルのcategory_idに依存する
-    　categories ||--o{ contacts : has
+    categories ||--o{ contacts : has
