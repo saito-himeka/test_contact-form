@@ -5,10 +5,6 @@
 @endsection
 
 @section('content')
-<form action="{{ route('logout') }}" method="POST">
-    @csrf
-    <button type="submit">ログアウト</button>
-</form>
 
 
 <main class="container">

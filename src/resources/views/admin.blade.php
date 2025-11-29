@@ -5,10 +5,6 @@
 @endsection
 
 @section('content')
-<form action="{{ route('logout') }}" method="POST">
-    @csrf
-    <button type="submit">ログアウト</button>
-</form>
 
 <main class="container">
         <h2 class="page-title">Admin</h2>
@@ -43,9 +39,6 @@
 
             <!-- 5: 日付 -->
             <input type="date" name="date" class="select-box" value="{{ request('date') }}">
-            {{--<select class="select-box">
-                <option value="">年/月/日</option>
-            </select>--}}
 
             <button type="submit" class="btn-search">検索</button>
 
@@ -97,122 +90,136 @@
                         <td>{{ $contact->category->content ?? '不明' }}</td>
                         <td>
                             <!-- FN023: 詳細ボタン -->
-                            <button type="button" class="btn-detail" onclick="openModal(this)">詳細</button>
-                            {{--
-                            <!-- FN026: 削除ボタン -->
-                            <form action="{{ route('admin.contacts.destroy', $contact) }}" method="POST" style="display:inline;" onsubmit="return confirm('お問い合わせID: {{ $contact->id }} を本当に削除しますか？');">
-                                @csrf
-                                @method('DELETE')
-                                <button type="submit" class="btn-delete">削除</button>
-                            </form>--}}
+                            <button 
+                            type="button" 
+                            class="btn-detail" 
+                            data-bs-toggle="modal" 
+                            data-bs-target="#contactModal" 
+                            onclick="setModalData(this)"
+                            >詳細</button>
+                            
                         </td>
                     </tr>
                     @endforeach
-                    {{--<tr>
-                        <td>山田 太郎</td>
-                        <td>男性</td>
-                        <td>test@example.com</td>
-                        <td>商品の交換について</td>
-                        <td><a href="#" class="btn-detail">詳細</a></td>
-                    </tr>--}}
                     
                 </tbody>
             </table>
         </div>
     </main>
-
-<!-- FN023, FN025: モーダルウィンドウのHTML構造 -->
-<div id="contact-modal" class="modal-overlay">
-    <div class="modal-content">
-        <button class="modal-close" onclick="closeModal()">×</button>
-        <h3>お問い合わせ詳細</h3>
-        <div id="modal-details">
-            <!-- 詳細データがここにJSで挿入されます -->
+{{-- ================================================= --}}
+{{-- Bootstrap モーダルのHTML構造 --}}
+{{-- 独自CSSとの干渉を避けるため、IDを #contactModal に変更 --}}
+{{-- ================================================= --}}
+<div class="modal fade" id="contactModal" tabindex="-1" aria-labelledby="contactModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="contactModalLabel">お問い合わせ詳細</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                {{-- Bootstrapのdlクラスを使用しつつ、カスタムCSSを適用 --}}
+                <dl class="detail-list">
+                    <div class="detail-item">
+                        <dt>お名前</dt>
+                        <dd id="modal-name"></dd>
+                    </div>
+                    <div class="detail-item">
+                        <dt>性別</dt>
+                        <dd id="modal-gender"></dd>
+                    </div>
+                    <div class="detail-item">
+                        <dt>メールアドレス</dt>
+                        <dd id="modal-email"></dd>
+                    </div>
+                    <div class="detail-item">
+                        <dt>電話番号</dt>
+                        <dd id="modal-tel"></dd>
+                    </div>
+                    <div class="detail-item">
+                        <dt>住所</dt>
+                        <dd id="modal-address"></dd>
+                    </div>
+                    <div class="detail-item">
+                        <dt>建物名</dt>
+                        <dd id="modal-building"></dd>
+                    </div>
+                    <div class="detail-item">
+                        <dt>お問い合わせの種類</dt>
+                        <dd id="modal-category"></dd>
+                    </div>
+                    <div class="detail-item detail-item-full">
+                        <dt>お問い合わせ内容</dt>
+                        <dd id="modal-detail"></dd>
+                    </div>
+                </dl>
+                
+                {{-- 削除フォーム --}}
+                <form id="delete-form" method="POST" action="">
+                    @csrf
+                    @method('DELETE')
+                    {{-- 💡 confirm() の代わりにカスタムUIの使用を推奨します --}}
+                    <button type="submit" class="btn-delete-modal" onclick="return confirm('お問い合わせID: ' + getContactId() + ' を本当に削除しますか？')">削除</button>
+                </form>
+            </div>
         </div>
     </div>
 </div>
 
+{{-- ================================================= --}}
+{{-- JavaScript: データ挿入ロジック --}}
+{{-- ================================================= --}}
 <script>
-    // FN023, FN025: モーダル表示/非表示ロジック
-    const modal = document.getElementById('contact-modal');
-    const modalDetails = document.getElementById('modal-details');
-    const triggerButtons = document.querySelectorAll('.js-modal-trigger');
-    const closeButton = document.getElementById('modal-close-btn');
-    const deleteForm = document.getElementById('delete-form');
-    // Laravelのルーティングヘルパー関数がJSから使えないため、削除ルートのベースをここで定義
-    const deleteRouteBase = "{{ route('admin.contacts.destroy', ['contact' => 'DUMMY_ID']) }}";
+    let currentContactId = null;
 
-
-    function openModal(button) {
-        const row = button.closest('tr');
-        if (!row) return;
-
-        let data = {};
+    /**
+     * 詳細ボタンクリック時に、<tr>からデータを取得しモーダル要素にセットする
+     * @param {HTMLElement} button - クリックされた「詳細」ボタン要素
+     */
+    function setModalData(button) {
         try {
-            data = JSON.parse(row.dataset.contactDetails);
-        } catch (e) {
-            console.error("JSONデータのパースエラー:", e);
-            return;
-        }
+            const row = button.closest('tr');
+            if (!row) throw new Error('Parent row element not found.');
+            
+            const dataJson = row.getAttribute('data-contact-details');
+            if (!dataJson) throw new Error('data-contact-details attribute missing.');
 
-        // 詳細情報のHTMLを生成
-        modalDetails.innerHTML = `
-            <div class="modal-detail-row">
-                <div class="modal-detail-label">お名前</div><div class="modal-detail-value">${data.name}</div>
-            </div>
-            <div class="modal-detail-row">
-                <div class="modal-detail-label">性別</div><div class="modal-detail-value">${data.gender}</div>
-            </div>
-            <div class="modal-detail-row">
-                <div class="modal-detail-label">メールアドレス</div><div class="modal-detail-value">${data.email}</div>
-            </div>
-            <div class="modal-detail-row">
-                <div class="modal-detail-label">電話番号</div><div class="modal-detail-value">${data.tel || 'N/A'}</div>
-            </div>
-            <div class="modal-detail-row">
-                <div class="modal-detail-label">住所</div><div class="modal-detail-value">${data.address || 'N/A'}</div>
-            </div>
-            <div class="modal-detail-row">
-                <div class="modal-detail-label">建物名</div><div class="modal-detail-value">${data.building || 'N/A'}</div>
-            </div>
-            <div class="modal-detail-row">
-                <div class="modal-detail-label">お問い合わせの種類</div><div class="modal-detail-value">${data.category}</div>
-            </div>
-            <div class="modal-detail-row detail-content-row">
-                <div class="modal-detail-label">お問い合わせ内容</div><div class="modal-detail-value detail-content-value">${data.detail}</div>
-            </div>
-        `;
-        
-        // 削除フォームの action URL を設定
-        // DUMMY_ID を実際のIDに置き換える
-        const deleteUrl = deleteRouteBase.replace('DUMMY_ID', data.id);
-        deleteForm.setAttribute('action', deleteUrl);
+            const data = JSON.parse(dataJson);
+            currentContactId = data.id; // 削除確認用IDを保持
 
-        modal.style.display = 'flex'; // モーダルを表示
-    }
+            // 1. モーダル内の要素にデータをセット
+            document.getElementById('modal-name').textContent = data.name || 'N/A';
+            document.getElementById('modal-gender').textContent = data.gender || 'N/A';
+            document.getElementById('modal-email').textContent = data.email || 'N/A';
+            document.getElementById('modal-tel').textContent = data.tel || 'N/A';
+            document.getElementById('modal-address').textContent = data.address || 'N/A';
+            document.getElementById('modal-building').textContent = data.building || 'なし';
+            document.getElementById('modal-category').textContent = data.category || 'N/A';
+            document.getElementById('modal-detail').textContent = data.detail || 'なし';
 
-    function closeModal() {
-        modal.style.display = 'none'; // モーダルを非表示
-    }
-
-    // ページ読み込み完了後にイベントリスナーを設定
-    document.addEventListener('DOMContentLoaded', () => {
-        // 1. 詳細ボタンにクリックイベントを設定
-        triggerButtons.forEach(button => {
-            button.addEventListener('click', function() {
-                openModal(this);
-            });
-        });
-
-        // 2. 閉じるボタンにイベントを設定
-        closeButton.addEventListener('click', closeModal);
-
-        // 3. モーダル外をクリックで閉じる処理
-        window.onclick = function(event) {
-            if (event.target === modal) {
-                closeModal();
+            // 2. 削除フォームのactionを設定
+            const deleteForm = document.getElementById('delete-form');
+            if (deleteForm && data.id) {
+                // ルートのプレフィックスは環境に合わせて調整
+                // 例: /admin/contacts/123
+                deleteForm.action = `/admin/contacts/${data.id}`;
             }
+
+        } catch (error) {
+            console.error("モーダルデータの設定中にエラーが発生しました:", error.message);
         }
-    });
+    }
+
+    /**
+     * 削除確認ダイアログ内で使用するためのIDを取得するヘルパー関数
+     */
+    function getContactId() {
+        return currentContactId;
+    }
+    
+    // 💡 注意: BootstrapのJavaScriptファイル (bootstrap.bundle.min.js) が
+    // このスクリプトよりも後に読み込まれている必要があります。
 </script>
+
+
 @endsection

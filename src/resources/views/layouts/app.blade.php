@@ -8,10 +8,15 @@
     <title>test_contact-form</title>
     <link rel="stylesheet" href="{{ asset('css/sanitize.css') }}" />
     <link rel="stylesheet" href="{{ asset('css/common.css') }}" />
+    <!-- layout.app内のどこか (例: <head>内) -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+
+    
 
     @yield('css')
 </head>
-
+    <!-- layout.app内の</body>直前 -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 <body>
     <header>
     <div class="header-title">FashionablyLate</div>
@@ -27,7 +32,7 @@
             <!-- 会員登録ページの場合: ログインボタンを表示 -->
             <a href="{{ route('login') }}" class="header-btn">login</a>
             
-        @elseif (Request::routeIs('admin')) 
+        @elseif (Request::routeIs('admin.index')) 
             <!-- 管理者ページの場合: ログアウトボタンを表示 -->
             <form action="{{ route('logout') }}" method="POST">
                 @csrf
