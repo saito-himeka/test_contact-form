@@ -35,9 +35,14 @@ cp .env.example .env
 php artisan key:generate
 ```
 
-6. **データベースをマイグレーション＆シード**
+6. **ストレージ・キャッシュの権限設定**
 ```bash
-php artisan migrate --seed
+chmod -R 777 storage bootstrap/cache
+```
+
+7. **データベースをマイグレーション**
+```bash
+php artisan migrate
 ```
 
 ## 使用技術/バージョン
@@ -56,4 +61,5 @@ php artisan migrate --seed
 
 
 ## ER図
-![ER図](docs/ER_diagram.png)
+![ER図](https://raw.githubusercontent.com/saito-himeka/test_contact-form/main/docs/ER_diagram.png)
+
