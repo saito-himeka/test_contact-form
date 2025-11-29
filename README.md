@@ -95,6 +95,4 @@ erDiagram
     }
 
     # リレーションの定義: contactsテーブルはcategoriesテーブルのcategory_idに依存する
-    categories ||--o{ contacts : has
-
-問い合わせる場合は、usersテーブルからcontactsテーブルへのFKが必要になります。
+    　categories ||--o{ contacts : has
