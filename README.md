@@ -61,4 +61,4 @@ php artisan migrate
 
 
 ## ER図
-![ER図](ER_diagram.png)
+![ER図](docs/ER_diagram.png)
