@@ -35,9 +35,9 @@ cp .env.example .env
 php artisan key:generate
 ```
 
-6. **データベースをマイグレーション＆シード**
+6. **データベースをマイグレーション**
 ```bash
-php artisan migrate --seed
+php artisan migrate
 ```
 
 ## 使用技術/バージョン
