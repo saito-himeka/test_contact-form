@@ -59,8 +59,6 @@ php artisan migrate
     - ユーザー名:laravel_user
     - パスワード:laravel_pass
 
-
-## ER図
 ## ER図
 
 ```mermaid
@@ -97,8 +95,6 @@ erDiagram
     }
 
     # リレーションの定義: contactsテーブルはcategoriesテーブルのcategory_idに依存する
-    # 一つのカテゴリ（お問い合わせの種類）に、複数のcontacts（お問い合わせ）が紐づく
     categories ||--o{ contacts : has
-    
-    # ※備考: usersテーブルとcontactsテーブルの間にリレーションがないため、ここでは定義していません。
-    # ユーザーがログインして問い合わせる場合は、usersテーブルからcontactsテーブルへのFKが必要になります。
+
+問い合わせる場合は、usersテーブルからcontactsテーブルへのFKが必要になります。
